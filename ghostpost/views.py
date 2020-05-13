@@ -1,0 +1,51 @@
+from django.shortcuts import render,reverse,HttpResponseRedirect
+from ghostpost.models import *
+from ghostpost.form import addRorB
+
+# Create your views here.
+def index(request):
+    data = RoastsAndBoasts.objects.order_by('-time')
+    return render(request, 'index.html',{'data': data})
+
+def roast_view(request):
+    data = RoastsAndBoasts.objects.filter(roastorboast=False).order_by('-time')
+    return render(request, 'index.html', {'data': data})
+
+def boast_view(request):
+    data = RoastsAndBoasts.objects.filter(roastorboast=True).order_by('-time')
+    return render(request, 'index.html', {'data': data})
+
+def sortscore(request):
+    data = RoastsAndBoasts.objects.all().order_by('-score')
+    return render(request, 'index.html', {'data': data})
+
+def like_view(request,post_id):
+    post = RoastsAndBoasts.objects.get(id=post_id)
+    post.upVotes += 1
+    post.save()
+    return HttpResponseRedirect(reverse('score',kwargs={'post_id': post_id}))
+
+def dislike_view(request,post_id):
+    post = RoastsAndBoasts.objects.get(id=post_id)
+    post.downVotes += 1
+    post.save()
+    return HttpResponseRedirect(reverse('score',kwargs={'post_id': post_id}))
+
+def score_view(request, post_id):
+    post = RoastsAndBoasts.objects.get(id=post_id)
+    post.score = post.upVotes - post.downVotes
+    post.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'),reverse('homepage'))
+
+def createRorB(request):
+    if request.method == 'POST':
+        form = addRorB(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            RoastsAndBoasts.objects.create(
+                roastorboast=data['roastorboast'],
+                content=data['content']
+            )
+            return HttpResponseRedirect(reverse('homepage'))
+    form = addRorB()
+    return render(request, 'create.html', {'form': form})

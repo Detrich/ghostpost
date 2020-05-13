@@ -1,0 +1,11 @@
+<h1>GhostPost Machine™</h1>
+<p>
+<button><a href="/" style="text-decoration:none">Home</a></button>
+<button><a href="/roasts/" style="text-decoration:none">View Roasts</a></button>
+<button><a href="/boasts/" style="text-decoration:none">View Boasts</a></button>
+<button><a href="/mostscore/" style="text-decoration:none">Sort by score</a></button></p>
+
+<button><a href="/new/" style="text-decoration:none">Create a new Roast or boast</a></button>
+{% for info in data %}
+    {% include 'detail.html' with info=info %}
+{%endfor%}

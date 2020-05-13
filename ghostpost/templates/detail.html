@@ -1,0 +1,19 @@
+<p>
+    {%if info.roastorboast%}
+<p>
+    Boast ~ {{info.score}} Score | {{info.upVotes}} Upvotes | {{info.downVotes}} Downvotes
+</p>
+    {%else%}
+<p>
+    Roast ~ {{info.score}} Score | {{info.upVotes}} Upvotes | {{info.downVotes}} Downvotes
+</p>
+    {%endif%}
+<li>
+    {{info.content}}
+</li>
+<p>
+    <button><a href="/like/{{info.id}}?next={{ request.path }}" style="text-decoration:none">Up Vote</a></button>
+    <button><a href="/dislike/{{info.id}}?next={{ request.path }}" style="text-decoration:none">Down Vote</a></button>
+</p>
+<p>Created on: {{info.time}}</p>
+</p>
