@@ -16,15 +16,15 @@
     <button><a href="/dislike/{{info.id}}?next={{ request.path }}" style="text-decoration:none; color:red">⇩</a></button>
 <p>
     {%if info.secretKey in request.path %}
-    <a href="{{ request.path.get_full_path }}">
-        Keep this link secure; this is your private link for managing this post!
-    </a>
-    <p>
     <button>
         <a href="/delete/{{ info.secretKey }}" style="text-decoration:none; color:red">
             Delete Post
         </a>
     </button>
+    <p>
+    Link : <a href="{{ request.get_full_path }}">{{request.get_raw_uri}}</a>
+    <p>Keep this link secure; this is your private link for managing this post!
+
     </p>
     {%endif%}
 </p>
