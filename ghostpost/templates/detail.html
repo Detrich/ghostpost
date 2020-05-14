@@ -1,19 +1,33 @@
 <p>
     {%if info.roastorboast%}
 <p>
-    Boast ~ {{info.score}} Score | {{info.upVotes}} Upvotes | {{info.downVotes}} Downvotes
+    <a href="/posts/{{info.id}}/" style="text-decoration:none; color:black">Boast</a> ~ {{info.score}} Score | {{info.upVotes}} Upvotes | {{info.downVotes}} Downvotes
 </p>
     {%else%}
 <p>
-    Roast ~ {{info.score}} Score | {{info.upVotes}} Upvotes | {{info.downVotes}} Downvotes
+    <a href="/posts/{{info.id}}/" style="text-decoration:none; color:black">Roast</a> ~ {{info.score}} Score | {{info.upVotes}} Upvotes | {{info.downVotes}} Downvotes
 </p>
     {%endif%}
 <li>
     {{info.content}}
 </li>
 <p>
-    <button><a href="/like/{{info.id}}?next={{ request.path }}" style="text-decoration:none">Up Vote</a></button>
-    <button><a href="/dislike/{{info.id}}?next={{ request.path }}" style="text-decoration:none">Down Vote</a></button>
+    <button><a href="/like/{{info.id}}?next={{ request.path }}" style="text-decoration:none; color:green">⇧</a></button>
+    <button><a href="/dislike/{{info.id}}?next={{ request.path }}" style="text-decoration:none; color:red">⇩</a></button>
+<p>
+    {%if info.secretKey in request.path %}
+    <a href="{{ request.path.get_full_path }}">
+        Keep this link secure; this is your private link for managing this post!
+    </a>
+    <p>
+    <button>
+        <a href="/delete/{{ info.secretKey }}" style="text-decoration:none; color:red">
+            Delete Post
+        </a>
+    </button>
+    </p>
+    {%endif%}
+</p>
 </p>
 <p>Created on: {{info.time}}</p>
 </p>

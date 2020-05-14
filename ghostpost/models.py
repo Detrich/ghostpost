@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+
 # Create your models here.
 class RoastsAndBoasts(models.Model):
     roastorboast = models.BooleanField()
@@ -9,6 +10,7 @@ class RoastsAndBoasts(models.Model):
     downVotes = models.IntegerField(default=0)
     time = models.DateTimeField(default=timezone.now)
     score = models.IntegerField(default=0)
+    secretKey = models.CharField(max_length=6)
     def __str__(self):
         if self.roastorboast == True:
             return "Roast"

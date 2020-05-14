@@ -1,6 +1,9 @@
 from django.shortcuts import render,reverse,HttpResponseRedirect
 from ghostpost.models import *
 from ghostpost.form import addRorB
+import random
+import string
+
 
 # Create your views here.
 def index(request):
@@ -42,10 +45,25 @@ def createRorB(request):
         form = addRorB(request.POST)
         if form.is_valid():
             data = form.cleaned_data
+            randomChars = ''.join(random.choice(string.ascii_lowercase) for i in range(6))
             RoastsAndBoasts.objects.create(
                 roastorboast=data['roastorboast'],
-                content=data['content']
+                content=data['content'],
+                secretKey=randomChars
             )
-            return HttpResponseRedirect(reverse('homepage'))
+            return HttpResponseRedirect(reverse('private', kwargs={'private_key': randomChars}))
     form = addRorB()
     return render(request, 'create.html', {'form': form})
+
+def single_view(request, post_id):
+    data = RoastsAndBoasts.objects.filter(id=post_id)
+    return render(request, 'index.html', {'data': data})
+
+def private_view(request, private_key):
+    data = RoastsAndBoasts.objects.filter(secretKey=private_key)
+    return render(request,'index.html', {'data': data})
+
+def delete_post(request,pk):
+    data = RoastsAndBoasts.objects.filter(secretKey=pk)
+    data.delete()
+    return HttpResponseRedirect(reverse('homepage'))
